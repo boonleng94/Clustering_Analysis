@@ -1,0 +1,32 @@
+cd /cygdrive/c/mahout-distribution-0.6/bin
+
+./mahout seqdirectory 
+-i c:/users/l335a14/desktop/testdata 
+-o c:/users/l335a14/desktop/seqtestdata 
+-c UTF-8
+
+./mahout seq2sparse 
+-i c:/users/l335a14/desktop/seqtestdata 
+-wt tfidf -n 2 -xs 3.0 
+-o c:/users/l335a14/desktop/vectorTFIDFtestdata 
+-a org.apache.mahout.vectorizer.DefaultAnalyzer
+
+./mahout lda 
+-i c:/users/l335a14/desktop/vectorTFIDFtestdata/tfidf-vectors/ 
+-o c:/users/l335a14/desktop/LDAwithTFIDF -k 15 -x 20
+
+./mahout ldatopics 
+-i c:/users/l335a14/desktop/LDAwithTFIDF/state-20/ 
+-d c:/users/l335a14/desktop/vectorTFIDFtestdata/dictionary.file-0 
+-o c:/users/l335a14/desktop/LDATopicsOutput 
+-w 3 -dt sequencefile
+
+./mahout vectordump 
+-s c:/users/l335a14/desktop/LDAwithTFIDF/docTopics/part-m-00000 
+-d c:/users/l335a14/desktop/vectorTFIDFtestdata/dictionary.file-0 
+-o c:/users/l335a14/desktop/doctopic.txt 
+-dt sequencefile -vs 1 -sort --printKey
+
+./mahout seqdumper 
+-s c:/users/l335a14/desktop/LDAwithTFIDF/docTopics/part-m-00000
+-o c:/users/l335a14/desktop/docstopics.txt
